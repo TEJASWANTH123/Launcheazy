@@ -64,10 +64,15 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'signin',          # Database name
+        'USER': 'root',            # Database user (root in this case)
+        'PASSWORD': '1234',        # Database password
+        'HOST': 'localhost',      # Database host
+        'PORT': '',               # Leave it as an empty string for the default port
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
