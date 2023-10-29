@@ -91,6 +91,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+# settings.py
+
+# OAuth2 Provider Details
+SOCIAL_AUTH_MICROSOFT_KEY = 'a8b0cda1-cdc8-4e12-8eca-13c0d3fe245a'
+SOCIAL_AUTH_MICROSOFT_SECRET = '19d0c855-7dd4-4720-9ae1-1ae210179dca'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
@@ -112,3 +117,12 @@ STATIC_URL = '/static/'  # Corrected the STATIC_URL
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# settings.py
+
+AUTHENTICATION_BACKENDS = (
+    # Other backends
+    'social_core.backends.microsoft.MicrosoftOAuth2',
+)
+
+SOCIAL_AUTH_MICROSOFT_SCOPE = ['User.Read']  # Adjust scopes as needed
+SOCIAL_AUTH_MICROSOFT_AUTH_EXTRA_ARGUMENTS = {'resource': 'https://outlook.office365.com/'}
