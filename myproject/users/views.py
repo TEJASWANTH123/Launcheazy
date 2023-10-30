@@ -1,18 +1,14 @@
-from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, UserLoginForm
 from .models import CustomUser  # Import your custom user model
-import logging
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth import login, authenticate
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import AuthenticationForm
-
-logger = logging.getLogger(__name__)
+from django.contrib import messages
 
 def user_list(request):
     users = CustomUser.objects.all()
     return render(request, 'user_list.html', {'users': users})
+
 def signup(request):
     if request.user.is_authenticated:
         return redirect('/')
@@ -23,13 +19,17 @@ def signup(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password1')
 
-            user = form.save()  # Save the user
+            user = form.save(commit=True)  # Create a user instance but don't save it yet
+            user.set_password(password)  # Set the password
+            user.save()  # Save the user
+
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)  # Log in the user
+                messages.success(request, 'You have successfully logged in.')
                 return redirect('login')  # Redirect to the login page
         else:
-            return render(request, 'signup.html', {'form': form})
+            return render(request, 'signup.html', {'form': form, 'error_message': 'User not enrolled. Please try again.'})
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
